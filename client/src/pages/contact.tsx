@@ -9,8 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertContactMessageSchema, type InsertContactMessage } from "@shared/schema";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Contact() {
@@ -45,29 +43,32 @@ export default function Contact() {
     }
   }, [urlService, form]);
 
-  const contactMutation = useMutation({
-    mutationFn: async (data: InsertContactMessage) => {
-      const response = await apiRequest("POST", "/api/contact", data);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      toast({
-        title: "Message sent successfully!",
-        description: data.message || "We'll get back to you within 24 hours.",
+  const onSubmit = async (data: InsertContactMessage) => {
+    try {
+      const response = await fetch("/.netlify/functions/sendMail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
-      form.reset();
-    },
-    onError: (error) => {
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Message sent successfully!",
+          description: result.message || "We'll get back to you within 24 hours.",
+        });
+        form.reset();
+      } else {
+        throw new Error(result.message || "Something went wrong");
+      }
+    } catch (error: any) {
       toast({
         title: "Failed to send message",
         description: error.message || "Please try again later.",
         variant: "destructive",
       });
-    },
-  });
-
-  const onSubmit = (data: InsertContactMessage) => {
-    contactMutation.mutate(data);
+    }
   };
 
   const services = [
@@ -84,31 +85,22 @@ export default function Contact() {
     <div className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1
-            className="text-3xl lg:text-4xl font-bold text-foreground mb-4"
-            data-testid="text-contact-title"
-          >
+          <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-4" data-testid="text-contact-title">
             Get Started Today
           </h1>
-          <p
-            className="text-xl text-muted-foreground max-w-3xl mx-auto"
-            data-testid="text-contact-subtitle"
-          >
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-contact-subtitle">
             Ready to optimize your accounting processes? Contact us for a free consultation.
           </p>
         </div>
-
+        
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Form */}
           <Card className="shadow-lg" data-testid="card-contact-form">
             <CardContent className="p-8 lg:p-12">
-              <h2
-                className="text-2xl font-bold text-card-foreground mb-8"
-                data-testid="text-form-title"
-              >
+              <h2 className="text-2xl font-bold text-card-foreground mb-8" data-testid="text-form-title">
                 Send us a message
               </h2>
-
+              
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -147,7 +139,7 @@ export default function Contact() {
                       )}
                     />
                   </div>
-
+                  
                   <FormField
                     control={form.control}
                     name="email"
@@ -166,7 +158,7 @@ export default function Contact() {
                       </FormItem>
                     )}
                   />
-
+                  
                   <FormField
                     control={form.control}
                     name="company"
@@ -184,18 +176,14 @@ export default function Contact() {
                       </FormItem>
                     )}
                   />
-
+                  
                   <FormField
                     control={form.control}
                     name="service"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Service Interest</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          data-testid="select-service"
-                        >
+                        <Select onValueChange={field.onChange} value={field.value} data-testid="select-service">
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select a service" />
@@ -213,7 +201,7 @@ export default function Contact() {
                       </FormItem>
                     )}
                   />
-
+                  
                   <FormField
                     control={form.control}
                     name="message"
@@ -233,31 +221,27 @@ export default function Contact() {
                       </FormItem>
                     )}
                   />
-
+                  
                   <Button
                     type="submit"
-                    disabled={contactMutation.isPending}
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
                     data-testid="button-submit-contact"
                   >
-                    {contactMutation.isPending ? "Sending..." : "Send Message"}
+                    Send Message
                   </Button>
                 </form>
               </Form>
             </CardContent>
           </Card>
-
+          
           {/* Contact Information */}
           <div className="space-y-8">
             <Card className="shadow-lg" data-testid="card-contact-info">
               <CardContent className="p-8">
-                <h2
-                  className="text-2xl font-bold text-card-foreground mb-6"
-                  data-testid="text-contact-info-title"
-                >
+                <h2 className="text-2xl font-bold text-card-foreground mb-6" data-testid="text-contact-info-title">
                   Contact Information
                 </h2>
-
+                
                 <div className="space-y-6">
                   <div className="flex items-start" data-testid="contact-email">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4 mt-1">
@@ -268,7 +252,7 @@ export default function Contact() {
                       <p className="text-muted-foreground">info@finexactsolutions.co.ke</p>
                     </div>
                   </div>
-
+                  
                   <div className="flex items-start" data-testid="contact-phone">
                     <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mr-4 mt-1">
                       <Phone className="text-accent h-6 w-6" />
@@ -278,7 +262,7 @@ export default function Contact() {
                       <p className="text-muted-foreground">+254 751 151 841</p>
                     </div>
                   </div>
-
+                  
                   <div className="flex items-start" data-testid="contact-location">
                     <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mr-4 mt-1">
                       <MapPin className="text-secondary h-6 w-6" />
@@ -291,7 +275,7 @@ export default function Contact() {
                 </div>
               </CardContent>
             </Card>
-
+            
             <img
               src="/logo.png"
               alt="FinExact Solutions Logo"
@@ -304,4 +288,3 @@ export default function Contact() {
     </div>
   );
 }
-
