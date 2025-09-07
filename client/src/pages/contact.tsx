@@ -60,7 +60,7 @@ export default function Contact() {
         });
         form.reset();
       } else {
-        throw new Error(result.message || "Something went wrong");
+        throw new Error(result.message || "Failed to send message");
       }
     } catch (error: any) {
       toast({
@@ -275,13 +275,6 @@ export default function Contact() {
                 </div>
               </CardContent>
             </Card>
-            
-            <img
-              src="/logo.png"
-              alt="FinExact Solutions Logo"
-              className="rounded-2xl shadow-xl w-full h-auto"
-              data-testid="img-office-environment"
-            />
           </div>
         </div>
       </div>
