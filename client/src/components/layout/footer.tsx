@@ -81,7 +81,7 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-secondary-foreground/80">
               <li data-testid="text-contact-email">info@finexactsolutions.co.ke</li>
-              <li data-testid="text-contact-phone">+254 700 123 456</li>
+              <li data-testid="text-contact-phone">+254 751 151 841</li>
               <li data-testid="text-contact-location">Nairobi, Kenya</li>
             </ul>
           </div>
