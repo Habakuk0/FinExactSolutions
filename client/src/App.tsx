@@ -9,6 +9,7 @@ import Services from "@/pages/services";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
 import Resources from "@/pages/resources";
+import ResourceDetail from "@/pages/resource-detail"; // ✅ new import
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -23,6 +24,7 @@ function Router() {
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
           <Route path="/resources" component={Resources} />
+          <Route path="/resources/:slug" component={ResourceDetail} /> {/* ✅ detail page route */}
           <Route component={NotFound} />
         </Switch>
       </main>
