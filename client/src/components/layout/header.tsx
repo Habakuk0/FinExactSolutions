@@ -32,7 +32,7 @@ export default function Header() {
               <img
                 src="/logo.png"
                 alt="FinExact Solutions Logo"
-                className="h-16 w-auto"
+                className="h-28 w-auto"
               />
               <span className="text-2xl font-bold text-primary">
                 FinExact Solutions
