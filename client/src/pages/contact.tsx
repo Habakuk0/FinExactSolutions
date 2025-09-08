@@ -85,12 +85,6 @@ export default function Contact() {
     <div className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          {/* Company Logo */}
-          <img
-            src="/logo.png"
-            alt="FinExact Solutions Logo"
-            className="h-20 w-auto mx-auto mb-6"
-          />
           <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-4" data-testid="text-contact-title">
             Get Started Today
           </h1>
@@ -282,17 +276,17 @@ export default function Contact() {
               </CardContent>
             </Card>
 
-            {/* Logo in place of random image */}
-            <img
-              src="/logo.png"
-              alt="FinExact Solutions Logo"
-              className="rounded-2xl shadow-xl w-48 h-auto mx-auto"
-              data-testid="img-company-logo"
-            />
+            {/* Logo Below Contact Info */}
+            <div className="text-center">
+              <img
+                src="/logo.png"
+                alt="FinExact Solutions Logo"
+                className="mx-auto mt-6 w-56 h-auto md:w-72 lg:w-80"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
