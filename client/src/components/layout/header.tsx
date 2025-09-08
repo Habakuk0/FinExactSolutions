@@ -30,9 +30,11 @@ export default function Header() {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link href="/" data-testid="link-home-logo">
-                <h1 className="text-xl font-bold text-primary cursor-pointer">
-                  FinExact Solutions
-                </h1>
+                <img
+                  src="/logo.png"
+                  alt="FinExact Solutions Logo"
+                  className="h-12 w-auto cursor-pointer"
+                />
               </Link>
             </div>
           </div>
