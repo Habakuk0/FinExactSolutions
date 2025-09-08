@@ -15,7 +15,6 @@ export default function Contact() {
   const { toast } = useToast();
   const [urlService, setUrlService] = useState<string>("");
 
-  // Get service from URL params
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const service = params.get("service");
@@ -36,7 +35,6 @@ export default function Contact() {
     },
   });
 
-  // Update form when URL service changes
   useEffect(() => {
     if (urlService) {
       form.setValue("service", urlService);
@@ -276,14 +274,14 @@ export default function Contact() {
               </CardContent>
             </Card>
 
-            {/* Logo Below Contact Info */}
-            <div className="text-center">
-              <img
-                src="/logo.png"
-                alt="FinExact Solutions Logo"
-                className="mx-auto mt-6 w-56 h-auto md:w-72 lg:w-80"
-              />
-            </div>
+            {/* Enlarged Logo */}
+            <img
+              src="/logo.png"
+              alt="FinExact Solutions Logo"
+              className="rounded-2xl shadow-xl w-full h-auto max-w-lg mx-auto"
+              style={{ maxHeight: "300px" }}
+              data-testid="img-company-logo"
+            />
           </div>
         </div>
       </div>
