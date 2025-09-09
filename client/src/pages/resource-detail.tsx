@@ -1,11 +1,12 @@
-import { useParams, Link } from "wouter";
+import { useRoute, Link } from "wouter";
 import { Calendar, ArrowLeft } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 export default function ResourceDetail() {
-  const { slug } = useParams();
+  const [, params] = useRoute("/resources/:slug");
+  const slug = params?.slug;
 
-  // Blog posts data (reuse same as in resources.tsx)
+  // Blog posts data (same as in resources.tsx)
   const blogPosts = [
     {
       slug: "quickbooks-vs-xero",
