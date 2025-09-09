@@ -1,9 +1,9 @@
-import { useRoute, Link } from "wouter";
+import { useParams, Link } from "wouter";
 import { Calendar, ArrowLeft } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 export default function ResourceDetail() {
-  const [, params] = useRoute("/resources/:slug");
+  const params = useParams();
   const slug = params?.slug;
 
   // Blog posts data (same as in resources.tsx)
