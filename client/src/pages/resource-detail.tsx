@@ -3,8 +3,7 @@ import { Calendar, ArrowLeft } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 export default function ResourceDetail() {
-  const params = useParams();
-  const slug = params?.slug;
+  const { slug } = useParams();
 
   // Blog posts data (same as in resources.tsx)
   const blogPosts = [
