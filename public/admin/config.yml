@@ -1,9 +1,9 @@
 backend:
   name: git-gateway
-  branch: main
+  branch: main   # or your deploy branch
 
-media_folder: "client/src/assets/uploads"
-public_folder: "/src/assets/uploads"
+media_folder: "client/public/uploads"
+public_folder: "/uploads"
 
 collections:
   - name: "resources"
@@ -12,6 +12,7 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Publish Date", name: "date", widget: "datetime"}
-      - {label: "Body", name: "body", widget: "markdown"}
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
