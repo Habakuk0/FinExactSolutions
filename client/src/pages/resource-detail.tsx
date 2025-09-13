@@ -8,16 +8,54 @@ export default function ResourceDetail() {
   // Blog posts data (same as in resources.tsx)
   const blogPosts = [
     {
-      slug: "quickbooks-vs-xero",
-      date: "March 15, 2024",
-      title: "QuickBooks vs Xero: Which is Right for Your Business?",
-      content: `
-        When choosing accounting software, businesses often compare QuickBooks and Xero.
-        QuickBooks offers strong payroll and inventory features, while Xero shines in collaboration and integrations.
-        Consider your team size, budget, and reporting needs before making a choice.
-      `,
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
-    },
+  slug: "quickbooks-vs-xero",
+  date: "March 15, 2024",
+  title: "QuickBooks vs Xero: Choosing the Best Accounting Software",
+  content: `
+## **Overview**
+QuickBooks and Xero are the two most popular cloud-based accounting solutions for small and medium businesses.  
+Both provide powerful tools for bookkeeping, financial reporting, and tax compliance, but they cater to slightly different needs.
+
+## **Pricing**
+- **[QuickBooks Pricing](https://quickbooks.intuit.com/global/oa/online-accounting-software-for-small-business/?cid=ppc_QBO_AFRICA-USD_B_QuickBooks_Broad_G_S&gclsrc=aw.ds&gad_source=1&gad_campaignid=22838128450&gbraid=0AAAAAD1w8J_2TFl2XdhA2MrEQMSe5RGnq&gclid=Cj0KCQjwrJTGBhCbARIsANFBfgtta4RMcBhPbd-YVzU6A-fQatAoI0lV-2k8jScEdhNgsw1b1G6e5PoaAm_5EALw_wcB#pricing):**  
+  Multiple tiers with optional add-ons such as Payroll and Advanced Reporting.  
+- **[Xero Pricing](https://www.xero.com/pricing-plans/):**  
+  Simpler pricing structure with unlimited users on every plan.
+
+## **Core Features**
+- **Bank Feeds & Reconciliation:** Both provide automatic bank feeds, but QuickBooks offers more U.S.–specific integrations.  
+- **Invoicing:** Xero’s invoicing is highly customizable, while QuickBooks includes more ready-made templates.  
+- **Payroll:** QuickBooks Payroll is integrated (extra fee). Xero requires third-party apps.
+
+## **Ease of Use**
+QuickBooks focuses on detailed reporting and a familiar interface for accountants.  
+Xero provides a cleaner, collaboration-friendly dashboard that many non-accountants find easier to navigate.
+
+## **Ideal Users**
+- **QuickBooks:** Great for businesses needing advanced payroll, inventory tracking, or deep U.S. tax integrations.  
+- **Xero:** Perfect for teams seeking unlimited users, international flexibility, and streamlined collaboration.
+
+## **Migration Tips**
+1. **Back up current data** before you start.  
+2. **Map your chart of accounts** carefully to avoid discrepancies.  
+3. **Run a test migration** with sample transactions.  
+4. **Train your team** to ensure a smooth adoption.
+
+## **Conclusion**
+Both platforms are excellent choices.  
+Choose **QuickBooks** if you need comprehensive payroll and U.S.-centric features.  
+Choose **Xero** if collaboration, unlimited users, and a clean user experience are top priorities.
+
+---
+
+## **Need Help Deciding?**
+Have questions or need assistance setting up your accounting software?  
+[**Contact Us**](/contact) today for a free consultation.
+  `,
+  image:
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&h=400",
+},
+   
     {
       slug: "accounting-software-migration",
       date: "March 10, 2024",
