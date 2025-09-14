@@ -1,9 +1,13 @@
 backend:
   name: git-gateway
-  branch: main   # or your deploy branch
+  branch: main
+  site_url: https://finexactsolutions.co.ke
 
 media_folder: "client/public/uploads"
 public_folder: "/uploads"
+
+local_backend: true
+publish_mode: editorial_workflow
 
 collections:
   - name: "resources"
@@ -15,4 +19,3 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Body", name: "body", widget: "markdown" }
-

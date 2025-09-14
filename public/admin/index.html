@@ -3,15 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <title>Content Manager</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Decap/Netlify CMS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Netlify / Decap CMS -->
+    <!-- When running locally this flag bypasses host validation -->
+    <script>
+      // Comment this out on production if you wish, it's safe to leave
+      window.CMS_ENV = "development";
+    </script>
     <script src="https://unpkg.com/netlify-cms-app/dist/netlify-cms.js"></script>
   </head>
   <body>
-    <script>
-      window.CMS_MANUAL_INIT = true;
-      NetlifyCms.init();
-    </script>
+    <!-- CMS mounts its UI automatically using /admin/config.yml -->
   </body>
 </html>
+
 
