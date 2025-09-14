@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
+  root: path.resolve(__dirname, "client"),
   plugins: [react()],
   resolve: {
     alias: {
@@ -11,12 +12,9 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "attached_assets"),
     },
   },
-  root: path.resolve(__dirname, "client"),
+  publicDir: path.resolve(__dirname, "client", "public"),  // 👈 add this
   build: {
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
-  },
-  server: {
-    historyApiFallback: true, // ✅ Fix routing in dev
   },
 });
