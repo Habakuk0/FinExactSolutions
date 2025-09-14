@@ -6,7 +6,6 @@ backend:
 media_folder: "uploads"
 public_folder: "/uploads"
 
-local_backend: true
 publish_mode: editorial_workflow
 
 collections:
@@ -19,4 +18,3 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Body", name: "body", widget: "markdown" }
-
