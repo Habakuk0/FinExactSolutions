@@ -1,28 +1,33 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Content Manager</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <meta charset="utf-8" />
+    <title>Content Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Netlify Identity Widget -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
 
-  <!-- Decap CMS (current Netlify CMS) -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-</head>
-<body>
-  <!-- CMS mounts automatically using /admin/config.yml -->
-</body>
+    <!-- Disable insights -->
+    <script>
+      window.CMS_DISABLE_INSIGHTS = true;
+    </script>
+
+    <!-- Decap CMS -->
+    <script src="https://unpkg.com/decap-cms-app@^3.0.0/dist/decap-cms.js"></script>
+  </head>
+  <body>
+    <div id="nc-root"></div>
+  </body>
 </html>
