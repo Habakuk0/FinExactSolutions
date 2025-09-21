@@ -4,16 +4,16 @@
     <meta charset="utf-8" />
     <title>Content Manager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
-
-    <!-- Optional: disable insights to silence console warnings -->
     <script>
       window.CMS_DISABLE_INSIGHTS = true;
     </script>
   </head>
   <body>
+    <!-- Decap CMS will mount here -->
     <div id="nc-root"></div>
+
+    <!-- ✅ Load AFTER body exists -->
+    <script src="https://unpkg.com/decap-cms@latest/dist/decap-cms.js"></script>
   </body>
 </html>
+
