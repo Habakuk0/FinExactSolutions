@@ -1,26 +1,48 @@
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import matter from "gray-matter";
 
-const resources = import.meta.glob("../content/resources/*.md", { eager: true, import: "default", query: "?raw" });
+type Resource = {
+  slug: string;
+  title: string;
+  date: string;
+  description: string;
+  image?: string;
+};
 
-export default function Resources() {
-  const blogPosts = Object.entries(resources).map(([path, content]) => {
-    const { data } = matter(content as string);
-    return {
-      slug: data.slug,
-      title: data.title,
-      date: data.date,
-      description: data.description || "",
-      image: data.image || "",
-    };
-  });
+// This assumes you have Decamp CMS endpoint configured in environment variable
+const DECAMP_API = import.meta.env.VITE_DECAMP_API;
+
+export default function ResourcesPage() {
+  const [resources, setResources] = useState<Resource[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${DECAMP_API}/resources`)
+      .then((res) => res.json())
+      .then((data) => {
+        setResources(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Decamp fetch error:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div className="py-20 text-center">Loading resources...</div>;
+  }
+
+  if (!resources.length) {
+    return <div className="py-20 text-center">No resources found.</div>;
+  }
 
   return (
     <div className="py-20 bg-background">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl lg:text-4xl font-bold mb-8">Resources</h1>
         <div className="grid gap-8">
-          {blogPosts.map((post) => (
+          {resources.map((post) => (
             <Link
               key={post.slug}
               href={`/resources/${post.slug}`}
