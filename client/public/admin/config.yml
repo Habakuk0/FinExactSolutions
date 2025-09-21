@@ -1,10 +1,13 @@
 backend:
-  name: git-gateway
+  name: github                
+  repo: Habakuk0/FinExactSolutions
   branch: main
-  site_url: https://finexactsolutions.co.ke
 
-media_folder: "uploads"
-public_folder: "/uploads"
+site_url: https://finexactsolutions.co.ke
+
+# Upload location inside the repo
+media_folder: "client/src/assets/uploads"     # where files are stored in Git
+public_folder: "/src/assets/uploads"          # public path the site uses
 
 publish_mode: editorial_workflow
 
@@ -18,3 +21,4 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Body", name: "body", widget: "markdown" }
+
