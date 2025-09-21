@@ -1,23 +1,19 @@
 import { Link } from "wouter";
 import matter from "gray-matter";
 
-const resources = import.meta.glob("../content/resources/*.md", { eager: true, query: "?raw" });
+const resources = import.meta.glob("../content/resources/*.md", { eager: true, import: "default", query: "?raw" });
 
-export default function ResourcesPage() {
-  const blogPosts = Object.entries(resources)
-    .map(([path, content]) => {
-      const { data } = matter(content as string);
-      // fallback slug from filename
-      const slug = data.slug || path.split("/").pop()?.replace(".md", "") || "";
-      return {
-        slug,
-        title: data.title,
-        date: data.date,
-        description: data.description || "",
-        image: data.image || "",
-      };
-    })
-    .sort((a, b) => (a.date > b.date ? -1 : 1)); // newest first
+export default function Resources() {
+  const blogPosts = Object.entries(resources).map(([path, content]) => {
+    const { data } = matter(content as string);
+    return {
+      slug: data.slug,
+      title: data.title,
+      date: data.date,
+      description: data.description || "",
+      image: data.image || "",
+    };
+  });
 
   return (
     <div className="py-20 bg-background">
