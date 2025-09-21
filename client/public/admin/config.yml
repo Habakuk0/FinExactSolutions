@@ -1,24 +1,26 @@
 backend:
-  name: github                
+  name: github
   repo: Habakuk0/FinExactSolutions
   branch: main
 
 site_url: https://finexactsolutions.co.ke
 
-# Upload location inside the repo
-media_folder: "client/src/assets/uploads"     # where files are stored in Git
-public_folder: "/src/assets/uploads"          # public path the site uses
+media_folder: "client/src/assets/uploads"
+public_folder: "/src/assets/uploads"
 
 publish_mode: editorial_workflow
 
 collections:
   - name: "resources"
     label: "Resources"
-    folder: "src/content/resources"
+    folder: "client/src/content/resources"
     create: true
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Image", name: "image", widget: "image" }
       - { label: "Body", name: "body", widget: "markdown" }
 
