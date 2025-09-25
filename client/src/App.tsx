@@ -1,18 +1,18 @@
-import { Route, Switch, useRoute } from "wouter";
+import { Route, Switch } from "wouter";
+import { Helmet } from "react-helmet";
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import Resources from "./pages/resources"; // resources list page
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Helmet } from "react-helmet";
 
-function ResourceDetail() {
-  const [match, params] = useRoute("/resources/:slug");
-
-  if (!match || !params) {
-    return <div className="text-center py-10 text-red-500">Invalid route.</div>;
-  }
-
+// ======================
+// Dynamic Resource Detail
+// ======================
+function ResourceDetail({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const [content, setContent] = useState("");
-  const [meta, setMeta] = useState({});
+  const [meta, setMeta] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -42,27 +42,18 @@ function ResourceDetail() {
       });
   }, [slug]);
 
-  if (loading) {
-    return <div className="text-center py-10 text-gray-500">Loading post…</div>;
-  }
-
-  if (error) {
-    return <div className="text-center py-10 text-red-500">Post not found.</div>;
-  }
+  if (loading) return <div className="text-center py-10 text-gray-500">Loading post…</div>;
+  if (error) return <div className="text-center py-10 text-red-500">Post not found.</div>;
 
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
       <Helmet>
         <title>{meta.title || "Resource Detail"} | FinExact Solutions</title>
         <meta name="description" content={meta.description || "Business insights and resources"} />
-        <meta property="og:title" content={meta.title} />
-        <meta property="og:description" content={meta.description} />
         {meta.image && <meta property="og:image" content={meta.image} />}
-        <meta property="og:url" content={`https://finexactsolutions.co.ke/resources/${slug}`} />
       </Helmet>
 
       <h1 className="text-3xl font-bold mb-4">{meta.title}</h1>
-
       {meta.image && (
         <img
           src={meta.image}
@@ -70,20 +61,35 @@ function ResourceDetail() {
           className="w-full h-auto mb-6 rounded shadow"
         />
       )}
-
       <p className="text-gray-600 mb-4">{meta.description}</p>
-
       <ReactMarkdown className="prose prose-lg">{content}</ReactMarkdown>
     </div>
   );
 }
 
+// ======================
+// App Router
+// ======================
 export default function App() {
   return (
     <Switch>
+      {/* Home page */}
+      <Route path="/" component={Home} />
+
+      {/* Services page */}
+      <Route path="/services" component={Services} />
+
+      {/* Resources list page */}
+      <Route path="/resources" component={Resources} />
+
+      {/* Dynamic resource detail page */}
       <Route path="/resources/:slug" component={ResourceDetail} />
+
+      {/* Catch-all fallback */}
       <Route>
-        <div className="text-center py-10 text-gray-500">Welcome to FinExact Solutions</div>
+        <div className="text-center py-10 text-gray-500">
+          Page not found.
+        </div>
       </Route>
     </Switch>
   );
