@@ -1,47 +1,76 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
-import Home from "@/pages/home";
-import Services from "@/pages/services";
-import About from "@/pages/about";
-import Contact from "@/pages/contact";
-import Resources from "@/pages/resources";
-import ResourceDetail from "@/pages/resource-detail"; // ✅ new import
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
+import { useRoute } from "wouter";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { Helmet } from "react-helmet";
 
-function Router() {
+function ResourceDetail() {
+  const [match, params] = useRoute("/resources/:slug");
+  const { slug } = params;
+  const [content, setContent] = useState("");
+  const [meta, setMeta] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    import(`../content/resources/${slug}.md`)
+      .then((module) => fetch(module.default))
+      .then((res) => res.text())
+      .then((text) => {
+        const [rawMeta, ...body] = text.split("---").filter(Boolean);
+        const metaObj = Object.fromEntries(
+          rawMeta
+            .trim()
+            .split("\n")
+            .map((line) => {
+              const [key, ...rest] = line.split(":");
+              return [key.trim(), rest.join(":").trim()];
+            })
+        );
+        setMeta(metaObj);
+        setContent(body.join("\n"));
+        setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
+        setLoading(false);
+      });
+  }, [slug]);
+
+  if (loading) {
+    return <div className="text-center py-10 text-gray-500">Loading post…</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-10 text-red-500">Post not found.</div>;
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1">
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/about" component={About} />
-          <Route path="/contact" component={Contact} />
-          <Route path="/resources" component={Resources} />
-          <Route path="/resources/:slug" component={ResourceDetail} /> {/* ✅ detail page route */}
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-      <Footer />
+    <div className="max-w-3xl mx-auto py-8 px-4">
+      <Helmet>
+        <title>{meta.title || "Resource Detail"} | FinExact Solutions</title>
+        <meta name="description" content={meta.description || "Business insights and resources"} />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:description" content={meta.description} />
+        {meta.image && <meta property="og:image" content={meta.image} />}
+        <meta property="og:url" content={`https://finexactsolutions.co.ke/resources/${slug}`} />
+      </Helmet>
+
+      <h1 className="text-3xl font-bold mb-4">{meta.title}</h1>
+
+      {meta.image && (
+        <img
+          src={meta.image}
+          alt={meta.title}
+          className="w-full h-auto mb-6 rounded shadow"
+        />
+      )}
+
+      <p className="text-gray-600 mb-4">{meta.description}</p>
+
+      <ReactMarkdown className="prose prose-lg">{content}</ReactMarkdown>
     </div>
   );
 }
 
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-}
-
-export default App;
+export default ResourceDetail;

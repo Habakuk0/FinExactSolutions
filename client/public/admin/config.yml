@@ -16,11 +16,11 @@ collections:
     folder: "client/src/content/resources"
     create: true
     slug: "{{slug}}"
+    preview_path: "resources/{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Slug", name: "slug", widget: "string", default: "{{title | slug}}" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Image", name: "image", widget: "string" }
       - { label: "Body", name: "body", widget: "markdown" }
-
