@@ -1,68 +1,53 @@
-import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import matter from "gray-matter";
 
-type Resource = {
-  slug: string;
-  title: string;
-  date: string;
-  description: string;
-  image?: string;
-};
-
-// This assumes you have Decamp CMS endpoint configured in environment variable
-const DECAMP_API = import.meta.env.VITE_DECAMP_API;
+// Glob import of all markdown files created by Decamp CMS
+const resourceFiles = import.meta.glob("../content/resources/*.md", {
+  eager: true,
+  query: "?raw",
+  import: "default"
+});
 
 export default function ResourcesPage() {
-  const [resources, setResources] = useState<Resource[]>([]);
-  const [loading, setLoading] = useState(true);
+  const posts = Object.entries(resourceFiles).map(([path, raw]) => {
+    const { data } = matter(raw as string);
+    return {
+      slug: data.slug,
+      title: data.title,
+      date: data.date,
+      description: data.description || "",
+      image: data.image || ""
+    };
+  });
 
-  useEffect(() => {
-    fetch(`${DECAMP_API}/resources`)
-      .then((res) => res.json())
-      .then((data) => {
-        setResources(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Decamp fetch error:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return <div className="py-20 text-center">Loading resources...</div>;
-  }
-
-  if (!resources.length) {
+  if (posts.length === 0) {
     return <div className="py-20 text-center">No resources found.</div>;
   }
 
   return (
-    <div className="py-20 bg-background">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl lg:text-4xl font-bold mb-8">Resources</h1>
-        <div className="grid gap-8">
-          {resources.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/resources/${post.slug}`}
-              className="block rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition"
-            >
-              {post.image && (
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-48 object-cover"
-                />
-              )}
-              <div className="p-4">
-                <h2 className="text-xl font-semibold">{post.title}</h2>
-                <p className="text-muted-foreground text-sm">{post.date}</p>
-                {post.description && <p className="mt-2">{post.description}</p>}
-              </div>
-            </Link>
-          ))}
-        </div>
+    <div className="py-20 max-w-4xl mx-auto px-4">
+      <h1 className="text-3xl font-bold mb-8">Resources</h1>
+      <div className="grid gap-8">
+        {posts.map((p) => (
+          <Link
+            key={p.slug}
+            href={`/resources/${p.slug}`}
+            className="block rounded-lg shadow hover:shadow-xl overflow-hidden"
+          >
+            {p.image && (
+              <img
+                src={p.image}
+                alt={p.title}
+                className="w-full h-48 object-cover"
+              />
+            )}
+            <div className="p-4">
+              <h2 className="text-xl font-semibold">{p.title}</h2>
+              <p className="text-sm text-muted-foreground">{p.date}</p>
+              {p.description && <p className="mt-2">{p.description}</p>}
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

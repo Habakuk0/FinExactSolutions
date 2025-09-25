@@ -1,30 +1,46 @@
-// client/src/pages/resources/[slug].tsx
-import { useParams } from "wouter";
-import { useState, useEffect } from "react";
+import { useParams, Link } from "wouter";
+import matter from "gray-matter";
+import ReactMarkdown from "react-markdown";
 
-const DECAMP_API = import.meta.env.VITE_DECAMP_API;
+const resourceFiles = import.meta.glob("../../content/resources/*.md", {
+  eager: true,
+  query: "?raw",
+  import: "default"
+});
 
-export default function ResourceDetail() {
+export default function ResourceSlug() {
   const { slug } = useParams<{ slug: string }>();
-  const [resource, setResource] = useState<any>(null);
 
-  useEffect(() => {
-    fetch(`${DECAMP_API}/resources/${slug}`)
-      .then((res) => res.json())
-      .then((data) => setResource(data))
-      .catch((err) => console.error(err));
-  }, [slug]);
+  const postEntry = Object.entries(resourceFiles).find(([path]) =>
+    path.includes(`${slug}.md`)
+  );
 
-  if (!resource) return <div className="py-20 text-center">Loading...</div>;
+  if (!postEntry) {
+    return (
+      <div className="py-20 text-center">
+        <h1 className="text-3xl font-bold mb-4">Resource Not Found</h1>
+        <Link href="/resources" className="text-primary hover:underline">
+          ← Back to Resources
+        </Link>
+      </div>
+    );
+  }
+
+  const { data, content } = matter(postEntry[1] as string);
 
   return (
-    <div className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold mb-4">{resource.title}</h1>
-      <p className="text-sm text-muted-foreground mb-4">{resource.date}</p>
-      {resource.image && (
-        <img src={resource.image} alt={resource.title} className="mb-6 rounded-lg" />
+    <div className="py-20 max-w-3xl mx-auto px-4">
+      <Link href="/resources" className="text-primary hover:underline mb-4 block">
+        ← Back to Resources
+      </Link>
+      {data.image && (
+        <img src={data.image} alt={data.title} className="w-full rounded mb-6" />
       )}
-      <div className="prose prose-lg">{resource.body}</div>
+      <h1 className="text-3xl font-bold mb-4">{data.title}</h1>
+      <p className="text-sm text-muted-foreground mb-6">{data.date}</p>
+      <div className="prose">
+        <ReactMarkdown>{content}</ReactMarkdown>
+      </div>
     </div>
   );
 }
