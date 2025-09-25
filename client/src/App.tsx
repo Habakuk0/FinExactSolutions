@@ -1,10 +1,15 @@
-import { useRoute } from "wouter";
+import { Route, Switch, useRoute } from "wouter";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Helmet } from "react-helmet";
 
 function ResourceDetail() {
   const [match, params] = useRoute("/resources/:slug");
+
+  if (!match || !params) {
+    return <div className="text-center py-10 text-red-500">Invalid route.</div>;
+  }
+
   const { slug } = params;
   const [content, setContent] = useState("");
   const [meta, setMeta] = useState({});
@@ -73,4 +78,13 @@ function ResourceDetail() {
   );
 }
 
-export default ResourceDetail;
+export default function App() {
+  return (
+    <Switch>
+      <Route path="/resources/:slug" component={ResourceDetail} />
+      <Route>
+        <div className="text-center py-10 text-gray-500">Welcome to FinExact Solutions</div>
+      </Route>
+    </Switch>
+  );
+}
