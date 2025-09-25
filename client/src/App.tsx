@@ -1,96 +1,43 @@
+i// client/src/App.tsx
 import { Route, Switch } from "wouter";
 import { Helmet } from "react-helmet";
-import Home from "./pages/Home";
-import Services from "./pages/Services";
-import Resources from "./pages/resources"; // resources list page
-import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
 
-// ======================
-// Dynamic Resource Detail
-// ======================
-function ResourceDetail({ params }: { params: { slug: string } }) {
-  const { slug } = params;
-  const [content, setContent] = useState("");
-  const [meta, setMeta] = useState<{ [key: string]: string }>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+import Home from "./pages/home";
+import Services from "./pages/services";
+import About from "./pages/about";
+import Contact from "./pages/contact";
+import Resources from "./pages/resources";
+import ResourceDetail from "./pages/resource-detail";
+import NotFound from "./pages/not-found";
 
-  useEffect(() => {
-    setLoading(true);
-    import(`../content/resources/${slug}.md`)
-      .then((module) => fetch(module.default))
-      .then((res) => res.text())
-      .then((text) => {
-        const [rawMeta, ...body] = text.split("---").filter(Boolean);
-        const metaObj = Object.fromEntries(
-          rawMeta
-            .trim()
-            .split("\n")
-            .map((line) => {
-              const [key, ...rest] = line.split(":");
-              return [key.trim(), rest.join(":").trim()];
-            })
-        );
-        setMeta(metaObj);
-        setContent(body.join("\n"));
-        setLoading(false);
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
-  }, [slug]);
-
-  if (loading) return <div className="text-center py-10 text-gray-500">Loading post…</div>;
-  if (error) return <div className="text-center py-10 text-red-500">Post not found.</div>;
-
-  return (
-    <div className="max-w-3xl mx-auto py-8 px-4">
-      <Helmet>
-        <title>{meta.title || "Resource Detail"} | FinExact Solutions</title>
-        <meta name="description" content={meta.description || "Business insights and resources"} />
-        {meta.image && <meta property="og:image" content={meta.image} />}
-      </Helmet>
-
-      <h1 className="text-3xl font-bold mb-4">{meta.title}</h1>
-      {meta.image && (
-        <img
-          src={meta.image}
-          alt={meta.title}
-          className="w-full h-auto mb-6 rounded shadow"
-        />
-      )}
-      <p className="text-gray-600 mb-4">{meta.description}</p>
-      <ReactMarkdown className="prose prose-lg">{content}</ReactMarkdown>
-    </div>
-  );
-}
-
-// ======================
-// App Router
-// ======================
 export default function App() {
   return (
-    <Switch>
-      {/* Home page */}
-      <Route path="/" component={Home} />
+    <>
+      {/* Global SEO / Meta */}
+      <Helmet>
+        <title>FinExact Solutions</title>
+        <meta
+          name="description"
+          content="FinExact Solutions – Business insights, services and resources for growth."
+        />
+        <meta property="og:title" content="FinExact Solutions" />
+        <meta
+          property="og:description"
+          content="Business insights, services and resources for growth."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://finexactsolutions.co.ke/" />
+      </Helmet>
 
-      {/* Services page */}
-      <Route path="/services" component={Services} />
-
-      {/* Resources list page */}
-      <Route path="/resources" component={Resources} />
-
-      {/* Dynamic resource detail page */}
-      <Route path="/resources/:slug" component={ResourceDetail} />
-
-      {/* Catch-all fallback */}
-      <Route>
-        <div className="text-center py-10 text-gray-500">
-          Page not found.
-        </div>
-      </Route>
-    </Switch>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/services" component={Services} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/resources" component={Resources} />
+        <Route path="/resources/:slug" component={ResourceDetail} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
